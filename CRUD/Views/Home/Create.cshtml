@@ -1,0 +1,22 @@
+﻿@model Employee
+<h2>
+    Add Employee
+</h2>
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    <label>Name:</label>
+    <input asp-for="Name" type="text" required /><br />
+    <label>Email:</label>
+    <input asp-for="Email" type="email" required /><br />
+    <label>Department:</label>
+    <select asp-for="DeptID">
+        <option value="">Select Department:</option>
+        @foreach (var dept in ViewBag.Departments)
+        {
+            <option value="@dept.Id">@dept.Name</option>
+        }
+    </select><br />
+    <label>Profile Image:</label>
+    <input asp-for="ImageFile" type="file" accept="image/*" required /><br />
+    <input type="submit" />
+
+</form>

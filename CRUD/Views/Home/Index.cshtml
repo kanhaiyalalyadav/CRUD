@@ -1,0 +1,41 @@
+﻿@model List<Employee>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2>Employee List</h2>
+<table class="table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Profile</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var emp in Model)
+        {
+            <tr>
+                <td>@emp.Id</td>
+                <td>@if (!string.IsNullOrEmpty(emp.ProfileImage))
+                    {
+                        <img src="@emp.ProfileImage" width="50%" height="50" style="border-radius:50%"/>
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>@emp.Name</td>
+                <td>@emp.Email</td>
+                <td>@emp.DeptName</td>
+                <td><a asp-action="Edit" asp-route-id="@emp.Id">Edit</a><a asp-action="Delete" asp-route-id="@emp.Id">Delete</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+<a asp-action="Create">Add New Employee</a>
