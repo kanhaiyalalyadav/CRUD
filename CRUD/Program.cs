@@ -11,8 +11,15 @@ var conHelper = new ConnectionHelper
 {
     Default = connectionStr,
 };
+builder.Services.AddSession(option =>
+{
+    option.IdleTimeout = TimeSpan.FromMinutes(5);
+    option.Cookie.HttpOnly = true;
+    option.Cookie.IsEssential = true;
+});
 builder.Services.AddSingleton(conHelper);
 builder.Services.AddScoped<IEmpRepo, EmpRepo>();
+builder.Services.AddScoped<IAuthencation, Authentication>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
