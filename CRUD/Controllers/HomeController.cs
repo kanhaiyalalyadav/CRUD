@@ -18,24 +18,42 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+        {
+            return RedirectToAction("Login", "Account");
+        }
         var emp = _empRepo.GetEmployees();
         return View(emp);
     }
     public IActionResult Create()
     {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+        {
+            return RedirectToAction("Login", "Account");
+        }
         ViewBag.Departments = _empRepo.GetDepartments();
         return View();
     }
     [HttpPost]
     public IActionResult Create(Employee emp)
     {
-        if (ModelState.IsValid){
-            _empRepo.AddEmployee(emp);
-            return RedirectToAction("Index");
-        };
-        ViewBag.Departments = _empRepo.GetDepartments();
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                _empRepo.AddEmployee(emp);
+                return RedirectToAction("Index");
+            }
+                ViewBag.Departments = _empRepo.GetDepartments();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            ModelState.AddModelError("", "An error occurred while processing your request.");
+        }
         return View(emp);
     }
+
 
     public IActionResult Privacy()
     {

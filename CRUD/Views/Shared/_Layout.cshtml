@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,6 +25,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            @if (!string.IsNullOrEmpty(Context.Session.GetString("Username")))
+                            {
+                            <a asp-controller="Account" asp-action="Logout" class="nav-link text-dark">LogOut</a>
+                            }
                         </li>
                     </ul>
                 </div>

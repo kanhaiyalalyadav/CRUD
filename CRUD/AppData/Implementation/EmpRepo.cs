@@ -15,8 +15,8 @@ namespace CRUD.AppData.Implementation
         }
         public void AddEmployee(Employee emp)
         {
-            string imagePath = null;
-            if (emp.ImageFile != null)
+            string ImagePath = null;
+            if (emp.ImageFile != null && emp.ImageFile.Length>0)
             {
                 string UploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
                 if (!Directory.Exists(UploadsFolder))
@@ -28,7 +28,7 @@ namespace CRUD.AppData.Implementation
                 using(var fileStream=new FileStream(FilePath, FileMode.Create))
                 {
                     emp.ImageFile.CopyTo(fileStream);
-                    imagePath = "/uploads/" + uniqueFileName;
+                    ImagePath = "/uploads/" + uniqueFileName;
                 }
                 using(SqlConnection con=new SqlConnection(Constr))
                 {
@@ -37,7 +37,7 @@ namespace CRUD.AppData.Implementation
                     cmd.Parameters.AddWithValue("@Name", emp.Name);
                     cmd.Parameters.AddWithValue("@Email", emp.Email);
                     cmd.Parameters.AddWithValue("@DeptID", emp.DeptID);
-                    cmd.Parameters.AddWithValue("@ProfileImage", (object)imagePath ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ProfileImage", (object)ImagePath ?? DBNull.Value);
                     con.Open();
                     cmd.ExecuteNonQuery();
                 }
